@@ -18,7 +18,7 @@ RUN set -xe \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update \
-    && apt-get install --print-uris  -yqq lsb-release patch nodejs python build-essential yarn cmake
+    && apt-get install -yqq lsb-release patch nodejs python build-essential yarn cmake
 
 RUN set -xe \
     && echo " # Generating translation patch ..." \
@@ -30,7 +30,7 @@ RUN set -xe \
     && echo " # Patching ..." \
     && patch -d ${GITLAB_DIR} -p1 < ../zh_CN.diff \
     && echo " # Copy assets files ..." \
-    && git checkout v11.1.4-zh \
+    && git checkout v12.3.5-zh \
     && cp -R locale ${GITLAB_DIR}/ \
     && mkdir -p ${GITLAB_DIR}/app \
     && cp -R app/assets ${GITLAB_DIR}/app/ \
@@ -94,7 +94,7 @@ ENV GITLAB_VERSION=v12.3.5
 ENV GITLAB_DIR=/opt/gitlab/embedded/service/gitlab-rails
 ENV GITLAB_GIT_ZH=https://gitlab.com/xhang/gitlab.git
 ENV GITLAB_GIT_COMMIT_UPSTREAM=v12.3.5
-ENV GITLAB_GIT_COMMIT_ZH=v12-3-stable-zh
+ENV GITLAB_GIT_COMMIT_ZH=v12.3.5-zh
 
 COPY --from=builder ${GITLAB_DIR}/app                   ${GITLAB_DIR}/app
 COPY --from=builder ${GITLAB_DIR}/public                ${GITLAB_DIR}/public

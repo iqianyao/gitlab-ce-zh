@@ -18,7 +18,7 @@ RUN set -xe \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update \
-    && apt-get install -yqq lsb-release patch nodejs python build-essential yarn cmake
+    && apt-get install --print-uris  -yqq lsb-release patch nodejs python build-essential yarn cmake
 
 RUN set -xe \
     && echo " # Generating translation patch ..." \
@@ -26,7 +26,7 @@ RUN set -xe \
     && git clone ${GITLAB_GIT_ZH} gitlab \
     && cd gitlab \
     && export IGNORE_DIRS=':!qa :!spec :!features :!.gitignore :!.gitlab :!locale :!app/assets/ :!vendor/assets/' \
-    && git diff --diff-filter=d v12.3.5..v12-3-stable-zh -- . ${IGNORE_DIRS} > ../zh_CN.diff \
+    && git diff --diff-filter=d v12.3.5..v12.3.5-zh -- . ${IGNORE_DIRS} > ../zh_CN.diff \
     && echo " # Patching ..." \
     && patch -d ${GITLAB_DIR} -p1 < ../zh_CN.diff \
     && echo " # Copy assets files ..." \
